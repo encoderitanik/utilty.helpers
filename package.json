@@ -19,5 +19,6 @@
   "homepage": "https://github.com/encoderitanik/utilty.helpers#readme",
   "devDependencies": {
     "mocha": "^8.4.0"
-  }
+  },
+  "dependencies": {}
 }
