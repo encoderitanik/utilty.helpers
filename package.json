@@ -1,0 +1,23 @@
+{
+  "name": "utilty.helpers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/encoderitanik/utilty.helpers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/encoderitanik/utilty.helpers/issues"
+  },
+  "homepage": "https://github.com/encoderitanik/utilty.helpers#readme",
+  "devDependencies": {
+    "mocha": "^8.4.0"
+  }
+}
