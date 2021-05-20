@@ -1,4 +1,5 @@
 const assert = require('assert');
+const { isNumber } = require('util');
 const helpers = require('../src/helpers')
 
 helpers.initialize()
@@ -50,6 +51,49 @@ describe('Object', function () {
 		cases.forEach((c) => {
 			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
 				assert.deepStrictEqual(c[0].toCamelCase(), c[1]);
+			});
+		})
+	});
+	describe('toSnakeCase', function () {
+		const cases = [
+			[
+				{
+					'aB': 'v',
+					'c.D': 'v',
+					'e-F': 'v'
+				},
+				{
+					'a_b': 'v',
+					'c_d': 'v',
+					'e_f': 'v'
+				},
+
+			],
+			[['aB'], ['aB']],
+			[{ 'aB': 'v' }, { 'a_b': 'v' }],
+			[{ a: ['aB'] }, { a: ['aB'] }],
+			[{ a: [{ 'aB': 'v' }] }, { a: [{ 'a_b': 'v' }] }],
+		]
+		cases.forEach((c) => {
+			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
+				assert.deepStrictEqual(c[0].toSnakeCase(), c[1]);
+			});
+		})
+	});
+	describe('toSet', function () {
+		const cases = [
+			[
+				[1, 2, 2, 3],
+				[1, 2, 3],
+			],
+			[
+				['a', 'a', 'b', 'c'],
+				['a', 'b', 'c'],
+			],
+		]
+		cases.forEach((c) => {
+			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
+				assert.deepStrictEqual(c[0].toSet(), c[1]);
 			});
 		})
 	});
