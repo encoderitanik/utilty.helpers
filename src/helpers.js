@@ -1,4 +1,14 @@
-export const toSuccess = res => {
+function convertIfNumber(input) {
+	if (typeof input !== 'string') return input
+	if (typeof input === 'string' && input.startsWidth('+')) return input
+	return containsNumber(input) ? +input : input
+}
+
+function containsNumber(input) {
+	return /^[\+\-]?\d*\.?\d+(?:[Ee][\+\-]?\d+)?$/.test(input)
+}
+
+function toSuccess(res) {
 	if (res.status === 'error' || res.error) return toError(res)
 	return {
 		...toCamelCase(res), error: false,
@@ -6,7 +16,7 @@ export const toSuccess = res => {
 	}
 }
 
-export const toError = error => {
+function toError(error) {
 	let data = { error: true }
 	if (error.response) {
 		const res = error.response.data
@@ -38,7 +48,7 @@ function only(object, keys) {
 		if (has(object, key)) data[key] = object[key]
 		else if (key.includes('.') && has(object, key.split('.')[0])) {
 			const dotKeys = key.split('.')
-			data[dotKeys[0]] = only(object[dotKeys[0]], dotKeys[1].split(','))
+			data[dotKeys[0]] = only(object[dotKeys[0]], dotKeys.slice(1).join(','))
 		}
 		return data
 	}, {})
@@ -88,6 +98,14 @@ function toCamelCase(data) {
 		}, {})
 
 	return data
+}
+
+function object(input) {
+	return {
+		toCamelCase: () => toCamelCase(input),
+		toSnakeCase: () => toSnakeCase(input),
+		only: (...keys) => only(input, keys),
+	}
 }
 
 module.exports = {
