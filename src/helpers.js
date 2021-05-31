@@ -1,6 +1,7 @@
 function convertIfNumber(input) {
 	if (typeof input !== 'string') return input
-	if (typeof input === 'string' && input.startsWidth('+')) return input
+	if (typeof input === 'string' && input.startsWith('+')) return input
+	console.log('CON NUM: => ', containsNumber(input));
 	return containsNumber(input) ? +input : input
 }
 
@@ -109,6 +110,7 @@ function object(input) {
 }
 
 module.exports = {
+	convertIfNumber,
 	initialize() {
 		Object.defineProperty(Object.prototype, 'toCamelCase', {
 			value: function () {
