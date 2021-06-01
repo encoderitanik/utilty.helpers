@@ -1,4 +1,21 @@
-export const toSuccess = res => {
+const v = input => {
+	return {
+		isFile() {
+			return input instanceof File
+		},
+		isArray() {
+			return Array.isArray(input)
+		},
+		isString() {
+			return typeof input === 'string'
+		},
+		isObject() {
+			return isPlainObject(input)
+		}
+	}
+}
+
+function toSuccess(res) {
 	if (res.status === 'error' || res.error) return toError(res)
 	return {
 		...toCamelCase(res), error: false,
@@ -6,7 +23,7 @@ export const toSuccess = res => {
 	}
 }
 
-export const toError = error => {
+function toError(error) {
 	let data = { error: true }
 	if (error.response) {
 		const res = error.response.data
@@ -35,10 +52,14 @@ function has(input, key) {
 
 function only(object, keys) {
 	return keys.reduce((data, key) => {
+		if (!key) return data
+		const splitted = key.split('.')
 		if (has(object, key)) data[key] = object[key]
-		else if (key.includes('.') && has(object, key.split('.')[0])) {
-			const dotKeys = key.split('.')
-			data[dotKeys[0]] = only(object[dotKeys[0]], dotKeys[1].split(','))
+		else if (splitted.length > 1 && has(object, splitted[0])) {
+			data[splitted[0]] = only(
+				object[splitted[0]],
+				splitted.slice(1).join('.').split(',')
+			)
 		}
 		return data
 	}, {})

@@ -21,6 +21,11 @@ describe('Object', function () {
 				{ a: 'v', b: { c: 'v', d: 'v', e: 'v' } },
 				['a', 'b.c,e'],
 				{ a: 'v', b: { c: 'v', e: 'v' } },
+			],
+			[
+				{ a: 'v', b: { c: 'v', d: 'v', e: 'v', g: { h: '', i: '' } } },
+				['a', 'b.c,e,g.h'],
+				{ a: 'v', b: { c: 'v', e: 'v', g: { h: '' } } },
 			]
 		]
 		cases.forEach((c) => {
