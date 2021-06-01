@@ -102,4 +102,33 @@ describe('Object', function () {
 			});
 		})
 	});
+	describe('convetIfNumber', function () {
+		const cases = [
+			[0, 0],
+			[1, 1],
+			[true, true],
+			[false, false],
+			[{}, {}],
+			[[], []],
+			[NaN, NaN],
+			[32, 32],
+			[Infinity, Infinity],
+			[Infinity, Infinity],
+			["0", '0'],
+			["1", '1'],
+			["10", '10'],
+			["01", '1'],
+			["-1", '-1'],
+			["-01", '-1'],
+			["+1", '+1'],
+		]
+		cases.forEach((c) => {
+			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
+				assert.deepStrictEqual(
+					helpers.convertIfNumber(c[0]),
+					c[1]
+				);
+			});
+		})
+	});
 });

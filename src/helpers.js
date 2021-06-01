@@ -14,6 +14,16 @@ const v = input => {
 		}
 	}
 }
+function convertIfNumber(input) {
+	if (typeof input !== 'string') return input
+	if (typeof input === 'string' && input.startsWith('+')) return input
+	console.log('CON NUM: => ', containsNumber(input));
+	return containsNumber(input) ? +input : input
+}
+
+function containsNumber(input) {
+	return /^[\+\-]?\d*\.?\d+(?:[Ee][\+\-]?\d+)?$/.test(input)
+}
 
 function toSuccess(res) {
 	if (res.status === 'error' || res.error) return toError(res)
@@ -111,7 +121,16 @@ function toCamelCase(data) {
 	return data
 }
 
+function object(input) {
+	return {
+		toCamelCase: () => toCamelCase(input),
+		toSnakeCase: () => toSnakeCase(input),
+		only: (...keys) => only(input, keys),
+	}
+}
+
 module.exports = {
+	convertIfNumber,
 	initialize() {
 		Object.defineProperty(Object.prototype, 'toCamelCase', {
 			value: function () {
@@ -145,3 +164,4 @@ module.exports = {
 		})
 	}
 }
+
