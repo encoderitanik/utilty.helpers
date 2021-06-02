@@ -5,6 +5,72 @@ const helpers = require('../src/helpers')
 helpers.initialize()
 
 describe('Object', function () {
+	describe('deepGet', function () {
+		const cases = [
+			[{ a: 'A' }, 'a', 'A'],
+			[{ a: { c: 'A' } }, 'a', { c: 'A' }],
+			[{ a: { c: 'A' } }, 'a.c', 'A'],
+			[{ a: { c: [] } }, 'a.c', []],
+			[[0], '0', 0],
+			[[0, [0]], '1.0', 0],
+			[{ a: [0, [0, 0]] }, 'a.1.1', 0],
+		]
+		cases.forEach((c) => {
+			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[2])}`, function () {
+				assert.deepStrictEqual(
+					helpers.deepGet(c[0], c[1]),
+					c[2]
+				);
+			});
+		})
+	});
+	describe('deepSet', function () {
+		const cases = [
+			[{ a: 'A' }, { a: 'B' }, 'a', 'B'],
+			[{ a: { c: 'A' } }, { a: { c: 'B' } }, 'a.c', 'B'],
+			[[0], [1], '0', 1],
+			[[0, [0]], [0, [1]], '1.0', 1],
+			[[0, [0, 0]], [0, [0, 1]], '1.1', 1],
+			[{ a: [0, [0, 0]] }, { a: [0, [0, 1]] }, 'a.1.1', 1],
+		]
+		cases.forEach((c) => {
+			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
+				assert.deepStrictEqual(
+					helpers.deepSet(c[0], ...c.slice(2)),
+					c[1]
+				);
+			});
+		})
+	});
+	describe('convetIfNumber', function () {
+		const cases = [
+			// [0, 0],
+			// [1, 1],
+			// [true, true],
+			// [false, false],
+			// [{}, {}],
+			// [[], []],
+			// [NaN, NaN],
+			// [32, 32],
+			// [Infinity, Infinity],
+			// [Infinity, Infinity],
+			// ["0", '0'],
+			// ["1", '1'],
+			// ["10", '10'],
+			// ["01", '1'],
+			// ["-1", '-1'],
+			// ["-01", '-1'],
+			// ["+1", '+1'],
+		]
+		cases.forEach((c) => {
+			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
+				assert.deepStrictEqual(
+					helpers.convertIfNumber(c[0]),
+					c[1]
+				);
+			});
+		})
+	});
 	describe('Only', function () {
 		const cases = [
 			[
@@ -99,35 +165,6 @@ describe('Object', function () {
 		cases.forEach((c) => {
 			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
 				assert.deepStrictEqual(c[0].toSet(), c[1]);
-			});
-		})
-	});
-	describe('convetIfNumber', function () {
-		const cases = [
-			[0, 0],
-			[1, 1],
-			[true, true],
-			[false, false],
-			[{}, {}],
-			[[], []],
-			[NaN, NaN],
-			[32, 32],
-			[Infinity, Infinity],
-			[Infinity, Infinity],
-			["0", '0'],
-			["1", '1'],
-			["10", '10'],
-			["01", '1'],
-			["-1", '-1'],
-			["-01", '-1'],
-			["+1", '+1'],
-		]
-		cases.forEach((c) => {
-			it(`${JSON.stringify(c[0])} => ${JSON.stringify(c[1])}`, function () {
-				assert.deepStrictEqual(
-					helpers.convertIfNumber(c[0]),
-					c[1]
-				);
 			});
 		})
 	});

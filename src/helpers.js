@@ -14,6 +14,39 @@ const v = input => {
 		}
 	}
 }
+
+/**
+ * 
+ * Get the reference of a value from deep array or object
+ * 
+ * @param {Array | Object} input - Input object or array
+ * @param {String} path - Dotten path of which value to get 
+ */
+function deepGet(input, path) {
+	let i
+	path = path.split('.');
+	for (i = 0; i < path.length; i++)
+		input = input[path[i]];
+	return input
+}
+
+/**
+ * 
+ * Set value of deep array or object
+ * 
+ * @param {Array | Object} input - Input object or array
+ * @param {String} path - Dotten path of where to set 
+ * @param {Any} value - Value to set in specified path
+ */
+function deepSet(input, path, value) {
+	let i, originalInput = input;
+	path = path.split('.');
+	for (i = 0; i < path.length - 1; i++)
+		input = input[path[i]];
+	input[path[i]] = value;
+	return originalInput
+}
+
 function convertIfNumber(input) {
 	if (typeof input !== 'string') return input
 	if (typeof input === 'string' && input.startsWith('+')) return input
@@ -130,6 +163,8 @@ function object(input) {
 }
 
 module.exports = {
+	deepGet,
+	deepSet,
 	convertIfNumber,
 	initialize() {
 		Object.defineProperty(Object.prototype, 'toCamelCase', {
